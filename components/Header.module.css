@@ -1,0 +1,15 @@
+.nav {
+  background-color: aqua;
+}
+
+.nav ul {
+  margin: 0;
+  list-style-type: none;
+  display: flex;
+  justify-content: space-evenly;
+  font-size: x-large;
+  padding: 10px;
+}
+.nav :link{
+  color: magenta;
+}
