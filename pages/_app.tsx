@@ -1,4 +1,4 @@
-// import '@/styles/globals.css'
+import '@/styles/global.sass';
 import type { AppProps } from 'next/app';
 import Header from '@/components/Header';
 
