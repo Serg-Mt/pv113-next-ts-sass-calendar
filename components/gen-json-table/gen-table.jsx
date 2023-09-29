@@ -1,5 +1,6 @@
+import style from './GenTable.module.sass';
 export default function GenTable({ columns, data }) {
-  return <table>
+  return <table className={style.gentable}>
     <thead>
       <tr>
         {columns.map(({ title }) => <th key={title}>{title}</th>)}

@@ -1,7 +1,7 @@
 const API_URL = 'https://jsonplaceholder.typicode.com/users';
 
-export const
-  columns = [
+const config = {
+  columns: [
     { title: 'ID', getVal: obj => obj.id },
     { title: 'Name', getVal: ({ name }) => name },
     { title: 'Email', getVal: ({ email }) => email },
@@ -9,8 +9,10 @@ export const
     { title: 'Website', getVal: ({ website }) => website },
     { title: 'Phone number', getVal: ({ phone }) => phone },
   ],
-  fetcher = async function (params) {
+  async fetcher(params) {
     const response = await fetch(API_URL);
     if (!response.ok) throw new Error('fetch ' + response.status);
     return await response.json();
-  };
+  }
+};
+export default config;
