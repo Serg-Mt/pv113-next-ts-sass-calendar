@@ -3,7 +3,10 @@ import styles from './Header.module.css';
 
 const pages = [
   { href: '/', name: 'Home' },
-  { href: '/calendar', name:'Calendar'}
+  { href: '/calendar', name:'Calendar'},
+  { href: '/table/jsph', name:'JSPH Users'},
+  { href: '/table/rnm', name:'Rick & Morty'},
+  { href: '/table/omdb', name:'Films'},
 ];
 
 
