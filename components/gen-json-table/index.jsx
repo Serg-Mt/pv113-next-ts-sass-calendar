@@ -1,11 +1,14 @@
 import { useEffect, useState } from 'react';
 import GenTable from './gen-table';
+import GenFetcher from './gen-fetcher';
+import FilmInfo from './omdb/film-info';
 
-export default function MainGenDataComponent({ config: { columns, fetcher } }) {
+export default function MainGenDataComponent({ config: { columns, fetcher, getInfo } }) {
   const
     [data, setData] = useState(null),
     [search, setSearch] = useState(''),
-    [sortByColumnN, setSortByColumnN] = useState(5), // number
+    [sortByColumnN, setSortByColumnN] = useState(null), // number
+    [film, setFilm] = useState(null),
     filteredData = search
       ? data?.filter(obj => columns.map(({ getVal }) => getVal(obj))
         .filter(x => 'string' === typeof x)
@@ -19,9 +22,15 @@ export default function MainGenDataComponent({ config: { columns, fetcher } }) {
 
 
   useEffect(() => { fetcher().then(d => setData(d)); }, [fetcher]);
+  useEffect(() => {
+    getInfo && getInfo('tt0109830')
+      .then(json => setFilm(json))
+  }, []);
 
   return <>
     <input value={search} onInput={evt => setSearch(evt.target.value)} />
     {data && <GenTable columns={columns} data={sortData} />}
+    <hr />
+    {film && <FilmInfo film={film} />}
   </>;
 }
