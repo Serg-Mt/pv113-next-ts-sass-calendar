@@ -1,7 +1,7 @@
 import OneUser from './OneUser';
 
 const
-  API_URL = 'https://jsonplaceholder.typicode.com/users',
+  API_URL = 'http://localhost:3333/users',
 
   config = {
     API_URL,

@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
 import GenTable from './gen-table';
+import useSWR from 'swr';
+import Error from './Error'
 
-
-export default function MainGenDataComponent({ config: { columns, fetcher, getInfo, InfoComponent } }) {
+export default function MainGenDataComponent({ config: { columns, fetcher, getInfo, InfoComponent, API_URL } }) {
   const
-    [data, setData] = useState(null),
+    // [data, setData] = useState(null),
+    { data, error, isLoading, isValidating, mutate } = useSWR(API_URL, fetcher),
     [search, setSearch] = useState(''),
     [sortByColumnN, setSortByColumnN] = useState(-1), // number
     [info, setInfo] = useState(null),
@@ -54,11 +56,16 @@ export default function MainGenDataComponent({ config: { columns, fetcher, getIn
 
 
 
-  useEffect(() => { fetcher().then(d => setData(d)); }, [fetcher]);
+  // useEffect(() => { fetcher().then(d => setData(d)); }, [fetcher]);
 
 
   return <div onClick={onClick}>
     <input value={search} onInput={evt => setSearch(evt.target.value)} />
+    <div style={{ position: 'absolute', fontSize: 'xxx-large' }}>
+      {isLoading && <>⌛</>}
+      {isValidating && <>👁</>}
+    </div>
+    {error && <Error error={error}/>}
     {data && <GenTable columns={columnsWithButtons} data={sortData} sortByColumnN={sortByColumnN} />}
     <hr />
     {info && <InfoComponent data={info} />}

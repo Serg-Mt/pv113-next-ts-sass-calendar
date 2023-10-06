@@ -7,13 +7,17 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "fix": "eslint --fix \"./**/*.{js,jsx,ts,tsx}\""
+    "fix": "eslint --fix \"./**/*.{js,jsx,ts,tsx}\"",
+    "serv": "pnpm json-server --watch db.json --port 3333 --delay 1500"
   },
   "dependencies": {
+    "json-server": "^0.17.4",
     "next": "latest",
     "react": "latest",
     "react-dom": "latest",
-    "sass": "^1.68.0"
+    "react-hot-toast": "^2.4.1",
+    "sass": "^1.68.0",
+    "swr": "^2.2.4"
   },
   "devDependencies": {
     "@types/node": "latest",
