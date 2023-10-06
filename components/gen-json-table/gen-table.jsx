@@ -1,5 +1,6 @@
+import { Fragment } from 'react';
 import style from './GenTable.module.sass';
-export default function GenTable({ columns, data, sortByColumnN }) {
+export default function GenTable({ columns, data, sortByColumnN, editetId, children }) {
   return <table className={style.gentable}>
     <thead>
       <tr>
@@ -15,9 +16,17 @@ export default function GenTable({ columns, data, sortByColumnN }) {
     </thead>
     <tbody>
       {data.map(obj =>
-        <tr key={obj.id}>
-          {columns.map(({ title, getVal }) => <td key={title}>{getVal(obj)}</td>)}
-        </tr>)}
+        <Fragment key={obj.id}>
+          {String(obj.id) === String(editetId)
+            ? <>{children}</>
+            : <tr key={obj.id}>
+              {columns.map(({ title, getVal }) => <td key={title}>{getVal(obj)}</td>)}
+            </tr>}
+        </Fragment>
+      )}
     </tbody>
+    <tfoot>
+      {!editetId && <>{children}</>}
+    </tfoot>
   </table>;
 }
