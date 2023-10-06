@@ -1,9 +1,16 @@
 import style from './GenTable.module.sass';
-export default function GenTable({ columns, data }) {
+export default function GenTable({ columns, data, sortByColumnN }) {
   return <table className={style.gentable}>
     <thead>
       <tr>
-        {columns.map(({ title }) => <th key={title}>{title}</th>)}
+        {columns.map(({ title }, index) =>
+          <th
+            key={title}
+            className={[
+              index === Math.abs(sortByColumnN) - 1 ? style.sort : '',
+              index === -sortByColumnN - 1 ? style.desc : ''].join(' ')}
+          >
+            {title}</th>)}
       </tr>
     </thead>
     <tbody>

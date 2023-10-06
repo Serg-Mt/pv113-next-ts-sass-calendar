@@ -6,7 +6,7 @@ export default function MainGenDataComponent({ config: { columns, fetcher, getIn
   const
     [data, setData] = useState(null),
     [search, setSearch] = useState(''),
-    [sortByColumnN, setSortByColumnN] = useState(null), // number
+    [sortByColumnN, setSortByColumnN] = useState(-1), // number
     [info, setInfo] = useState(null),
     columnsWithButtons = columns.concat({
       title: 'actions', getVal: ({ id }) => <>
@@ -39,6 +39,16 @@ export default function MainGenDataComponent({ config: { columns, fetcher, getIn
           return;
       }
     }
+    const
+      th = evt.target.closest('thead th');
+    if (th) {
+      let newSortN;
+      if (Math.abs(sortByColumnN) === 1 + th.cellIndex)
+        newSortN = -sortByColumnN;
+      else
+        newSortN = 1 + th.cellIndex;
+      setSortByColumnN(newSortN);
+    }
 
   }
 
@@ -49,7 +59,7 @@ export default function MainGenDataComponent({ config: { columns, fetcher, getIn
 
   return <div onClick={onClick}>
     <input value={search} onInput={evt => setSearch(evt.target.value)} />
-    {data && <GenTable columns={columnsWithButtons} data={sortData} />}
+    {data && <GenTable columns={columnsWithButtons} data={sortData} sortByColumnN={sortByColumnN} />}
     <hr />
     {info && <InfoComponent data={info} />}
   </div>;
