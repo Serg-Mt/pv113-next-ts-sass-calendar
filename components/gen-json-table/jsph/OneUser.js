@@ -1,6 +1,6 @@
 import {usercard} from './OneUser.module.sass';
 
-export default function OneUser({ data, children }) {
+export default function OneUser({ user, children }) {
   const
     { id, name, username, email,
       address: { street, suite, city, zipcode, geo: { lat, lng } },
@@ -10,7 +10,7 @@ export default function OneUser({ data, children }) {
         catchPhrase,
         bs
       }
-    } = data;
+    } = user;
 
   return (
     <>

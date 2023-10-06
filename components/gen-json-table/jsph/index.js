@@ -1,3 +1,5 @@
+import OneUser from './OneUser';
+
 const
   API_URL = 'https://jsonplaceholder.typicode.com/users',
 
@@ -15,7 +17,13 @@ const
       const response = await fetch(API_URL);
       if (!response.ok) throw new Error('fetch ' + response.status);
       return await response.json();
-    }
+    },
+    async getInfo(id) {
+      const response = await fetch(API_URL + '/' + id);
+      if (!response.ok) throw new Error('fetch ' + response.status);
+      return await response.json();
+    },
+    InfoComponent: ({ data }) => OneUser({ user: data })
   };
-  
+
 export default config;

@@ -1,14 +1,20 @@
 import { useEffect, useState } from 'react';
 import GenTable from './gen-table';
-import GenFetcher from './gen-fetcher';
-import FilmInfo from './omdb/film-info';
 
-export default function MainGenDataComponent({ config: { columns, fetcher, getInfo } }) {
+
+export default function MainGenDataComponent({ config: { columns, fetcher, getInfo, InfoComponent } }) {
   const
     [data, setData] = useState(null),
     [search, setSearch] = useState(''),
     [sortByColumnN, setSortByColumnN] = useState(null), // number
-    [film, setFilm] = useState(null),
+    [info, setInfo] = useState(null),
+    columnsWithButtons = columns.concat({
+      title: 'actions', getVal: ({ id }) => <>
+        <button data-id={id} data-action='info'>ℹ️</button>
+        <button data-id={id} data-action='edit'>✏️</button>
+        <button data-id={id} data-action='del'>❌</button>
+      </>
+    }),
     filteredData = search
       ? data?.filter(obj => columns.map(({ getVal }) => getVal(obj))
         .filter(x => 'string' === typeof x)
@@ -19,18 +25,32 @@ export default function MainGenDataComponent({ config: { columns, fetcher, getIn
       ? filteredData?.toSorted((a, b) => 'string' === typeof getVal(a) ? Math.sign(sortByColumnN) * getVal(a).localeCompare(getVal(b)) : 1)
       : filteredData;
 
+  function onClick(evt) {
+    const
+      source = evt.target.closest('button[data-action][data-id]');
+    if (source) {
+      const { id, action } = source.dataset;
+      switch (action) {
+        case 'del':
+          setData(data.filter(el => String(el.id) !== id));
+          return;
+        case 'info':
+          if (getInfo) getInfo(id).then(json => setInfo(json));
+          return;
+      }
+    }
+
+  }
+
 
 
   useEffect(() => { fetcher().then(d => setData(d)); }, [fetcher]);
-  useEffect(() => {
-    getInfo && getInfo('tt0109830')
-      .then(json => setFilm(json))
-  }, []);
 
-  return <>
+
+  return <div onClick={onClick}>
     <input value={search} onInput={evt => setSearch(evt.target.value)} />
-    {data && <GenTable columns={columns} data={sortData} />}
+    {data && <GenTable columns={columnsWithButtons} data={sortData} />}
     <hr />
-    {film && <FilmInfo film={film} />}
-  </>;
+    {info && <InfoComponent data={info} />}
+  </div>;
 }

@@ -1,5 +1,7 @@
+import FilmInfo from './film-info';
+
 const
-  API_URL = 'https://www.omdbapi.com/?apikey=a2b07930&s=green',
+  API_URL = `https://www.omdbapi.com/?apikey=a2b07930&s=green`,
   config = {
     API_URL,
     columns: [
@@ -20,8 +22,8 @@ const
         response = await fetch(`https://www.omdbapi.com/?apikey=a2b07930&plot=full&i=${id}`);
       if (!response.ok) throw new Error('fetch ' + response.status);
       return (await response.json());
-
-    }
+    },
+    InfoComponent : ({data})=>FilmInfo({film:data})
   };
 
 export default config;
